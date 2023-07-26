@@ -10,57 +10,64 @@
     WindowStyle="None"
     mc:Ignorable="d">
     <Window.Resources>
-        <Style BasedOn="{StaticResource {x:Type ToggleButton}}" TargetType="{x:Type ToggleButton}">
+
+        <ControlTemplate x:Key="ComboBoxHeaderTemplate" TargetType="{x:Type ComboBox}">
+            <Grid>
+                <ToggleButton x:Name="ContentButton">
+                    <ContentPresenter />
+                </ToggleButton>
+
+                <Popup x:Name="PART_Popup" IsOpen="{Binding ElementName=ContentButton, Path=IsChecked}">
+                    <Grid
+                        Name="DropDown"
+                        MinWidth="{TemplateBinding FrameworkElement.ActualWidth}"
+                        MaxHeight="{TemplateBinding ComboBox.MaxDropDownHeight}"
+                        SnapsToDevicePixels="True">
+                        <Border Name="DropDownBorder" Background="{TemplateBinding ComboBox.Background}">
+                            <ScrollViewer>
+                                <ItemsPresenter KeyboardNavigation.DirectionalNavigation="Contained" />
+                            </ScrollViewer>
+                        </Border>
+                    </Grid>
+                </Popup>
+            </Grid>
+            <ControlTemplate.Triggers>
+                <Trigger SourceName="PART_Popup" Property="Window.AllowsTransparency" Value="True">
+                    <Setter TargetName="DropDownBorder" Property="FrameworkElement.Margin" Value="0,2,0,0" />
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+
+        <Style
+            x:Key="ModeComboBoxStyle"
+            BasedOn="{StaticResource {x:Type ComboBox}}"
+            TargetType="{x:Type ComboBox}">
             <Style.Resources>
                 <Style TargetType="Border">
                     <Setter Property="CornerRadius" Value="5" />
                 </Style>
             </Style.Resources>
-            <Setter Property="Background" Value="{StaticResource Control.Background}" />
+            <!--<Setter Property="Background" Value="{StaticResource Control.Background}" />-->
             <Setter Property="Width" Value="100" />
             <Setter Property="Height" Value="120" />
             <Setter Property="Margin" Value="5" />
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type ToggleButton}">
-                        <Grid>
-                            <ContentPresenter />
-                            <Popup IsOpen="{TemplateBinding IsChecked}" x:Name="PART_Popup">
-                                <Grid
-                                    Name="DropDown"
-                                    MinWidth="{TemplateBinding FrameworkElement.ActualWidth}"
-                                    MaxHeight="{TemplateBinding ComboBox.MaxDropDownHeight}"
-                                    SnapsToDevicePixels="True">
-                                    <Border Name="DropDownBorder" Background="{TemplateBinding ComboBox.Background}">
-                                        <ScrollViewer Margin="4,6,4,6">
-                                            <ItemsPresenter KeyboardNavigation.DirectionalNavigation="Contained" />
-                                        </ScrollViewer>
-                                    </Border>
-                                </Grid>
-                            </Popup>
-                        </Grid>
-                        <ControlTemplate.Triggers>
-                            <Trigger SourceName="PART_Popup" Property="Window.AllowsTransparency" Value="True">
-                                <Setter TargetName="DropDownBorder" Property="FrameworkElement.Margin" Value="0,2,0,0" />
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
         </Style>
+
     </Window.Resources>
     <StackPanel>
-        <ToggleButton>
+        <ComboBox Style="{StaticResource ModeComboBoxStyle}">
             <StackPanel>
                 <Image Source="/Icons/gamepad.png" />
                 <TextBlock HorizontalAlignment="Center" Text="Gaming Keyboard" />
             </StackPanel>
-        </ToggleButton>
-        <ToggleButton>
+            <ComboBoxItem>123</ComboBoxItem>
+            <ComboBoxItem>123</ComboBoxItem>
+        </ComboBox>
+        <!--<ComboBox>
             <StackPanel>
                 <Image Source="/Icons/pc.png" />
                 <TextBlock HorizontalAlignment="Center" Text="Virtual Keyboard" />
             </StackPanel>
-        </ToggleButton>
+        </ComboBox>-->
     </StackPanel>
 </Window>
